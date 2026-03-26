@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Ledger Pulse | Crypto Intelligence</title>
+    <style>
+        /* --- CSS VARIABLES (The Brand Palette) --- */
+        :root {
+            --bg-color: #0B101E;
+            --card-bg: #151B2B;
+            --accent-teal: #00E5FF;
+            --text-main: #FFFFFF;
+            --text-muted: #8B95A5;
+            --success-green: #00FFA3;
+            --border-color: #2A3143;
+            --font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        /* --- GLOBAL RESETS --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: var(--font-family);
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        /* --- BUTTONS --- */
+        .btn {
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background-color: var(--accent-teal);
+            color: #000;
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
+        }
+        .btn-primary:hover {
+            box-shadow: 0 0 25px rgba(0, 229, 255, 0.7);
+        }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--accent-teal);
+            color: var(--accent-teal);
+        }
+        .btn-outline:hover {
+            background: rgba(0, 229, 255, 0.1);
+        }
+
+        /* --- HEADER & NAV --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            border-bottom: 1px solid var(--border-color);
+            background-color: rgba(11, 16, 30, 0.9);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo span { color: var(--accent-teal); }
+        nav ul {
+            display: flex;
+            gap: 25px;
+        }
+        nav a:hover { color: var(--accent-teal); }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            text-align: center;
+            padding: 80px 20px;
+            background: radial-gradient(circle at top, #15234b 0%, var(--bg-color) 70%);
+            border-bottom: 1px solid var(--border-color);
+        }
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 30px auto;
+        }
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        /* --- MAIN LAYOUT (Grid) --- */
+        .container {
+            display: grid;
+            grid-template-columns: 2.5fr 1fr;
+            gap: 30px;
+            padding: 40px 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* --- PULSE FEED (Left Column) --- */
+        .feed-header {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--accent-teal);
+            display: inline-block;
+            padding-bottom: 5px;
+        }
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            transition: transform 0.2s;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-teal);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+        }
+        .card-meta-top {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            margin-bottom: 15px;
+            color: var(--text-muted);
+        }
+        .tag-source {
+            background: rgba(255,255,255,0.1);
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+        .tag-sentiment { color: var(--success-green); }
+        .card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+        .card-content {
+            flex-grow: 1;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+        .card-meta-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+            margin-top: auto;
+        }
+
+        /* --- SIDEBAR (Right Column) --- */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .widget {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+        }
+        .widget h4 {
+            margin-bottom: 15px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .trending-list li {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-color);
+            font-weight: bold;
+        }
+        .trending-list li span { color: var(--accent-teal); }
+
+        /* --- FOOTER --- */
+        footer {
+            background-color: #080B14;
+            padding: 40px 5%;
+            text-align: center;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-color);
+            margin-top: 40px;
+        }
+
+        /* --- MOBILE RESPONSIVENESS --- */
+        @media (max-width: 900px) {
+            .container { grid-template-columns: 1fr; }
+            nav ul { display: none; }
+            .hero h1 { font-size: 2.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+             The Ledger <span>Pulse</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Daily Pulse Feed</a></li>
+                <li><a href="#">Alpha Reports</a></li>
+            </ul>
+        </nav>
+        <button class="btn btn-primary">Get Alpha Access</button>
+    </header>
+
+    <section class="hero">
+        <h1>Your Daily Crypto Intelligence,<br>Noise-Filtered & Automated.</h1>
+        <p>Get concise, AI-generated summaries of critical market updates, airdrop opportunities, and on-chain movements.</p>
+        <div class="hero-buttons">
+            <button class="btn btn-outline">Explore Free Feed</button>
+            <button class="btn btn-primary">Join Premium Alpha</button>
+        </div>
+    </section>
+
+    <div class="container">
+        
+        <main class="feed">
+            <h2 class="feed-header">The Pulse Feed</h2>
+            <div class="card-grid" id="news-container">
+                <p style="color: var(--text-muted);">Fetching latest market data...</p>
+            </div>
+        </main>
+
+        <aside class="sidebar">
+            
+            <div class="widget">
+                <h4> Trending Alpha</h4>
+                <ul class="trending-list">
+                    <li>1. BTC <span>+5.2%</span></li>
+                    <li>2. SOL <span>+8.4%</span></li>
+                    <li>3. ETH <span>+3.1%</span></li>
+                    <li>4. RNDR <span>+18.0%</span></li>
+                </ul>
+            </div>
+
+            <div class="widget">
+                <h4>Connect Wallet</h4>
+                <p style="font-size: 0.85rem; margin-bottom: 15px; color: var(--text-muted);">Sync your portfolio for personalized news updates.</p>
+                <button class="btn btn-primary" style="width: 100%;">Connect Web3 Wallet</button>
+            </div>
+
+        </aside>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 The Ledger Pulse. Noise Filtered. Alpha Delivered.</p>
+    </footer>
+
+    <script>
+        // *** CRITICAL STEP: Replace 'YOUR-SITE-NAME.wordpress.com' with your actual free WordPress domain ***
+        const wpApiUrl = 'https://itcharagh.wordpress.com/wp-json/wp/v2/posts?per_page=6&_embed';
+        
+        const container = document.getElementById('news-container');
+
+        async function loadCryptoNews() {
+            try {
+                const response = await fetch(wpApiUrl);
+                
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                
+                const posts = await response.json();
+                
+                // Clear the loading message
+                container.innerHTML = '';
+
+                if (posts.length === 0) {
+                    container.innerHTML = '<p style="color: var(--text-muted);">Awaiting the next automated market pulse...</p>';
+                    return;
+                }
+
+                // Loop through posts and build HTML cards
+                posts.forEach(post => {
+                    const title = post.title.rendered;
+                    const content = post.content.rendered;
+                    const link = post.link;
+                    const date = new Date(post.date).toLocaleDateString();
+
+                    const cardHTML = `
+                        <article class="card">
+                            <div class="card-meta-top">
+                                <span class="tag-source">AI Summary</span>
+                                <span class="tag-sentiment">Market Update</span>
+                            </div>
+                            <h3>${title}</h3>
+                            <div class="card-content">
+                                ${content}
+                            </div>
+                            <div class="card-meta-bottom">
+                                <span>${date}</span>
+                                <a href="${link}" target="_blank" style="color: var(--accent-teal);">Read Full Report</a>
+                            </div>
+                        </article>
+                    `;
+                    
+                    container.innerHTML += cardHTML;
+                });
+            } catch (error) {
+                console.error('Error fetching news:', error);
+                container.innerHTML = '<p style="color: #ff4d4d;">Error loading the Pulse Feed. Please ensure your WordPress site is public and the API link is correct.</p>';
+            }
+        }
+
+        // Run the function immediately when the page loads
+        loadCryptoNews();
+    </script>
+</body>
+</html>
+
